@@ -4,12 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Movie extends Model
 {
     use HasFactory;
 
-    public function genre()
+    protected $table = 'movies';
+    public function genres()
     {
         return $this->belongsToMany(Genre::class);
     }
@@ -19,13 +21,14 @@ class Movie extends Model
         return $this->belongsToMany(Language::class);
     }
 
+
     public function types()
     {
-        return $this->hasMany(Type::class, 'movie_types');
+        return $this->belongsTo(Type::class, 'movie_type_id');
     }
 
     public function country()
     {
-        return $this->belongsToMany(Country::class, 'origin_countries');
+        return $this->belongsToMany(Country::class, 'movie_origin_country', 'movie_id', 'movie_origin_country_id');
     }
 }
